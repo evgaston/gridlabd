@@ -2013,7 +2013,11 @@ int object_saveall(FILE *fp) /**< the stream to write to */
 				if ( (global_glm_save_options&GSO_NOINTERNALS)==GSO_NOINTERNALS && prop->access!=PA_PUBLIC )
 					continue;
 				buffer[0]='\0';
-				if ( object_property_to_string(obj, prop->name, buffer, sizeof(buffer)) != NULL )
+				if ( prop->ptype == PT_method )
+				{
+					// TODO: iterate
+				}
+				else if ( object_property_to_string(obj, prop->name, buffer, sizeof(buffer)) != NULL )
 				{
 					if ( prop->access != access && (global_glm_save_options&GSO_NOMACROS)==0 )
 					{

@@ -71,15 +71,14 @@ int main
 	return return_code;
 }
 unsigned int GldMain::next_id = 0;
+
 GldMain::GldMain(int argc, const char *argv[])
-: 	globals(this), 
+: 	globals(this), // TODO: this must be first until reentrancy is done
 	exec(this), 
 	cmdarg(this),
 	gui(this)
 {
 	id = next_id++;
-	// TODO: remove this when reetrant code is done
-	my_instance = this;
 
 	set_global_browser();
 

@@ -1,0 +1,26 @@
+class test {
+    randomvar x;
+}
+
+object test {
+    name "my_test";
+    x "type:normal(0,1);min:-10;max:+10;refresh:1h";
+}
+
+clock {
+    timezone "EST+5EDT";
+    starttime "2020-01-01 00:00:00";
+    stoptime "2020-02-01 00:00:00";
+}
+
+module tape;
+
+object multi_recorder {
+    parent "my_test";
+    property "x";
+    file "x.csv";
+    interval -1;
+}
+
+#set glm_save_options=MINIMAL
+#set savefile=gridlabd.glm

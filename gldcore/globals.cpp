@@ -1297,6 +1297,7 @@ GldGlobals::GldGlobals(GldMain *inst) :
 	instance(*inst)
 {
 	assert(inst!=NULL);
+	my_instance = inst; // TODO: remove when reetrancy is done
 	varlist = NULL;
 	last = NULL;
 	IN_MYCONTEXT output_debug("GldGlobals::GldGlobals(GldMain *inst=%x) ok", &instance);
