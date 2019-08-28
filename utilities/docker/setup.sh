@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# docker centos-gridlabd setup script
+# docker ubuntu-gridlabd setup script
 #
 # Starting docker on the host
 #
