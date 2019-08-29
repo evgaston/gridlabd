@@ -1,25 +1,53 @@
 #!/bin/bash
 #
-# docker ubuntu-gridlabd setup script
-#
-# Starting docker on the host
-#
-#   host% docker run -it -v $(pwd):/tmp ubuntu bash
-#.  host%
-#  
+# To use this script run "docker build .""
+. config.sh
 
-### Docker commands to build gridlabd
+# download source code to gridlabd
+git clone ${GRIDLABD_ORIGIN} -b ${GRIDLABD_BRANCH} /usr/local/src/gridlabd
 
-
-git clone https://github.com/dchassin/gridlabd /usr/local/src/gridlabd
+# build xerces for gridlabd
 cd /usr/local/src/gridlabd/third_party
-gunzip xerces-c-3.1.1.tar.gz
-tar xf xerces-c-3.1.1.tar
-cd xerces-c-3.1.1
-ls
-(export XERCESCROOT=`pwd`;./configure && make)
-cp -r include/xercesc /usr/include
-chmod -R a+r /usr/include/xercesc
-ln lib/* /usr/lib 
+XERCES=xerces-c-3.1.1
+gunzip ${XERCES}.tar.gz
+tar xf ${XERCES}.tar
+cd ${XERCES}
+export XERCESCROOT=`pwd`;
+./configure
+make install
 /sbin/ldconfig
 
+# install mysql 
+cd /usr/local/src/gridlabd/third_party
+MYSQL=mysql-connector-c-6.1.11-linux-glibc2.12-x86_64
+gunzip ${MYSQL}.tar.gz
+tar xf ${MYSQL}.tar
+cp -u ${MYSQL}/bin/* /usr/local/bin
+cp -Ru ${MYSQL}/include/* /usr/local/include
+cp -Ru ${MYSQL}/lib/* /usr/local/lib
+
+# install armadillo
+cd /usr/local/src/gridlabd/third_party
+ARMA=armadillo-7.800.1
+gunzip ${ARMA}.tar.gz
+tar xf ${ARMA}.tar
+cd ${ARMA}
+cmake .
+make install
+/sbin/ldconfig
+
+# build and install gridlabd
+cd /usr/local/src/gridlabd
+autoreconf -isf
+./configure --with-mysql=/usr/local
+make -j20 install
+
+# check python and gridlabd version
+echo "Version check:"
+python3 -V
+echo "import gridlabd; print('GridLAB-D %s' % gridlabd.__version__)" | python3
+
+# Validate gridlabd
+gridlabd -T $(nproc) --validate
+
+test "x${REMOVE_SOURCE}" == "xyes" && rm -rf /usr/local/src/gridlabd
