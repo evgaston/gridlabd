@@ -37,8 +37,8 @@ make install
 /sbin/ldconfig
 
 # install other needed libraries
-apt-get install libcurl4-openssl-dev
-apt-get install libncurses5-dev
+apt-get install libcurl4-openssl-dev -y
+apt-get install libncurses5-dev -y
 
 # build and install gridlabd
 cd /usr/local/src/gridlabd
@@ -54,4 +54,7 @@ echo "import gridlabd; print('GridLAB-D %s' % gridlabd.__version__)" | python3
 # Validate gridlabd
 gridlabd -T $(nproc) --validate
 
-test "x${REMOVE_SOURCE}" == "xyes" && rm -rf /usr/local/src/gridlabd
+cd /tmp
+if [ "x${REMOVE_SOURCE}" == "xyes" ]; then 
+	rm -rf /usr/local/src/gridlabd
+fi

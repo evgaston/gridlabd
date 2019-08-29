@@ -24,6 +24,7 @@ pip install mysql-client
 
 # install system build tools needed by gridlabd
 apt-get install git -y
+apt-get install unzip -y
 apt-get install autoconf -y
 apt-get install libtool -y
 apt-get install g++ -y
