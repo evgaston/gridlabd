@@ -11,6 +11,7 @@ add-apt-repository ppa:deadsnakes/ppa
 apt update
 apt install python3.7 -y
 apt install python3-pip -y
+apt install python3.7-dev -y
 
 # change default python3 to python3.7 for validation
 update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.7 1
