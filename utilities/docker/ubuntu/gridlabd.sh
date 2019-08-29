@@ -36,6 +36,10 @@ cmake .
 make install
 /sbin/ldconfig
 
+# install other needed libraries
+apt-get install libcurl4-openssl-dev
+apt-get install libncurses5-dev
+
 # build and install gridlabd
 cd /usr/local/src/gridlabd
 autoreconf -isf
